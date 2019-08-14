@@ -10,9 +10,25 @@ class HomeRepository {
   Future<List<PostModel>> getPosts() async {
     try {
       var response = await _client.get("/posts");
-      return (response.data as List).map((item) => PostModel.fromJson(item)).toList();
+      return (response.data as List)
+          .map((item) => PostModel.fromJson(item))
+          .toList();
     } on DioError catch (e) {
-     throw(e.message);
+      throw (e.message);
+    }
+  }
+
+  Future<int> createPost(Map<String, dynamic> data) async {
+    try {
+      var response = await _client.post("/postss", data: data);
+      return response.statusCode;
+    } on DioError catch (e) {
+      throw (e.message);
     }
   }
 }
+
+//CREATE -> POST
+//READ  -> GET
+//UPDATE
+//DELE

@@ -23,6 +23,9 @@ class CustomIntercetors extends InterceptorsWrapper{
     onError(DioError e) {
       //Exception
       print("ERROR[${e.response.statusCode}] => PATH: ${e.request.path}");
+      if(e.response.statusCode == 404)
+      return DioError(message: "Erro interno");
+
      return  e;
     }
 

@@ -14,6 +14,7 @@ class HomeBloc extends BlocBase {
   Observable<List<PostModel>> get responseOut => listPost.stream;
   
   void getPosts() async{
+    responseIn.add(null);
     try{
     var res = await repo.getPosts();
     responseIn.add(res);
