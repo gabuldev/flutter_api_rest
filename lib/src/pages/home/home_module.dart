@@ -12,7 +12,7 @@ class HomeModule extends ModuleWidget {
   @override
   List<Bloc> get blocs => [
         Bloc((i) => HomeBloc(HomeModule.to.getDependency<HomeRepository>())),
-        Bloc((i) => CreateBloc(HomeModule.to.getDependency<HomeRepository>())),
+        Bloc((i) => CreateBloc(HomeModule.to.getDependency<HomeRepository>()),singleton: false),
       ];
 
   @override

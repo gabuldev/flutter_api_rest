@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:tratar_erros_dio/src/pages/create/create_bloc.dart';
 import 'package:tratar_erros_dio/src/pages/home/home_module.dart';
-import 'package:tratar_erros_dio/src/shared/models/post_model.dart';
+
 
 class CreatePage extends StatefulWidget {
   final Function onSuccess;
@@ -23,14 +23,14 @@ class _CreatePageState extends State<CreatePage> {
   @override
   void didChangeDependencies() {
     controller = Controller();
-    listenResponse = bloc.responseOut.listen((data) {
-      if (data == 201) {
-        Timer(Duration(seconds: 1), () {
-          widget.onSuccess();
-          Navigator.pop(context);
-        });
-      }
-    });
+    listenResponse = bloc.post.listen((data) {
+        if(data == Substate.done){
+          Timer(Duration(seconds: 1), (){
+            Navigator.pop(context);
+          });
+        }
+    },  
+    );
     super.didChangeDependencies();
   }
 
@@ -47,68 +47,76 @@ class _CreatePageState extends State<CreatePage> {
         title: Text("Create Post"),
         centerTitle: true,
       ),
-      body: StreamBuilder<int>(
-          stream: bloc.responseOut,
-          builder: (context, snapshot) {
-            if (snapshot.hasError) return Center(child: Text("${snapshot.error}",style: TextStyle(fontSize: 25)));
+      body: Stack(
+        children: <Widget>[
+          
+          StreamBuilder<Substate>(
+              stream: bloc.responseOut,
+              builder: (context, snapshot) {
+                
+                
+                if (snapshot.hasError) return Center(child: Text("${snapshot.error}",style: TextStyle(fontSize: 25)));
 
-            if (snapshot.hasData) {
-              if (snapshot.data == 0) {
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              } else
-                return Center(child: Text("Inserido com sucesso!",style: TextStyle(fontSize: 25),));
-            } else {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 32.0),
-                    child: Form(
-                      key: controller.formKey,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          TextFormField(
-                            onSaved: (value) => bloc.title = value,
-                            validator: (value) => value.isEmpty
-                                ? "O título não pode ser nulo"
-                                : null,
-                            decoration: InputDecoration(labelText: "Title"),
+                switch (snapshot.connectionState) {
+                  case ConnectionState.waiting: return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                        child: Form(
+                          key: controller.formKey,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              TextFormField(
+                                onSaved: (value) => bloc.title = value,
+                                validator: (value) => value.isEmpty
+                                    ? "O título não pode ser nulo"
+                                    : null,
+                                decoration: InputDecoration(labelText: "Title"),
+                              ),
+                              TextFormField(
+                                onSaved: (value) => bloc.body = value,
+                                validator: (value) => value.isEmpty
+                                    ? "O body não pode ser nulo"
+                                    : null,
+                                maxLines: 3,
+                                decoration: InputDecoration(labelText: "Body"),
+                              )
+                            ],
                           ),
-                          TextFormField(
-                            onSaved: (value) => bloc.body = value,
-                            validator: (value) => value.isEmpty
-                                ? "O body não pode ser nulo"
-                                : null,
-                            maxLines: 3,
-                            decoration: InputDecoration(labelText: "Body"),
-                          )
-                        ],
+                        ),
                       ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 32.0),
-                    child: RaisedButton(
-                      color: Colors.blue,
-                      child: Text(
-                        "Enviar",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      onPressed: () {
-                        if (controller.validate()) {
-                          bloc.postIn.add(PostModel(
-                              body: bloc.body, title: bloc.title, userId: 1));
-                        }
-                      },
-                    ),
-                  )
-                ],
-              );
-            }
-          }),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 32.0),
+                        child: RaisedButton(
+                          color: Colors.blue,
+                          child: Text(
+                            "Enviar",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          onPressed: () {
+                            print("pressed");
+                            if (controller.validate()) {
+                             bloc.sendPost();
+                            }
+                          },
+                        ),
+                      )
+                    ],
+                  );
+                      break;
+                  case ConnectionState.active : 
+                  if(snapshot.data == Substate.awaiting)
+                  return Container(child: Center(child: CircularProgressIndicator(),));
+                  else
+                  return Container(child: Center(child: Text("Realizado com sucesso"),));
+                        break;
+                  default: return Container();
+                }
+              }),
+        ],
+      ),
     );
   }
 }

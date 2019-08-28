@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:tratar_erros_dio/src/pages/create/create_page.dart';
 import 'package:tratar_erros_dio/src/pages/home/home_bloc.dart';
@@ -46,7 +44,7 @@ class _HomePageState extends State<HomePage> {
           }
         ),
       ),
-     /* floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: (){
           Navigator.push(context, MaterialPageRoute(builder: (context) => CreatePage(
@@ -55,7 +53,7 @@ class _HomePageState extends State<HomePage> {
 
           )));
         },
-      ),*/
+      ),
     );
   }
 }
