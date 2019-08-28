@@ -7,7 +7,9 @@ import 'package:tratar_erros_dio/src/shared/models/post_model.dart';
 class CreateBloc extends BlocBase {
   final HomeRepository repo;
 
-  CreateBloc(this.repo);
+  CreateBloc(this.repo){
+    responseOut = post.switchMap(observablePost);
+  }
 
   String title;
   String body;
@@ -15,7 +17,7 @@ class CreateBloc extends BlocBase {
   var post = BehaviorSubject<PostModel>();
 
   PostModel get postValue => post.value;
-  Observable<int> get responseOut => post.switchMap(observablePost);
+  Observable<int> responseOut;
   Sink<PostModel> get postIn => post.sink;
 
   Stream<int> observablePost(PostModel data) async* {
@@ -24,7 +26,7 @@ class CreateBloc extends BlocBase {
     var response = await repo.createPost(data.toJson());
     yield response;
     }catch(e){
-      post.addError(e);
+      throw e;
     }
   }
 

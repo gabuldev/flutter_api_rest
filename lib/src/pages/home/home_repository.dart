@@ -20,7 +20,7 @@ class HomeRepository {
 
   Future<int> createPost(Map<String, dynamic> data) async {
     try {
-      var response = await _client.post("/postss", data: data);
+      var response = await _client.post("/posts", data: data);
       return response.statusCode;
     } on DioError catch (e) {
       throw (e.message);
