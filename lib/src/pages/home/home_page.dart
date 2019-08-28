@@ -46,7 +46,7 @@ class _HomePageState extends State<HomePage> {
           }
         ),
       ),
-      floatingActionButton: FloatingActionButton(
+     /* floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: (){
           Navigator.push(context, MaterialPageRoute(builder: (context) => CreatePage(
@@ -55,7 +55,7 @@ class _HomePageState extends State<HomePage> {
 
           )));
         },
-      ),
+      ),*/
     );
   }
 }
