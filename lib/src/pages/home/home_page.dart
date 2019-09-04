@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:tratar_erros_dio/src/pages/create/create_page.dart';
 import 'package:tratar_erros_dio/src/pages/home/home_bloc.dart';
 import 'package:tratar_erros_dio/src/pages/home/home_module.dart';
+import 'package:tratar_erros_dio/src/pages/update/update_page.dart';
 import 'package:tratar_erros_dio/src/shared/models/post_model.dart';
 
 class HomePage extends StatefulWidget {
@@ -38,7 +39,14 @@ class _HomePageState extends State<HomePage> {
             }
 
             if(snapshot.hasData){
-              return Column(children: snapshot.data.map((item) => ListTile(title: Text(item.title),)).toList(),);
+              return Column(children: snapshot.data.map((item) => ListTile(
+                title: Text(item.title),
+                onTap: (){
+                  Navigator.push(context,MaterialPageRoute(builder: (context) => UpdatePage(snapshot: item,)));
+                },
+                )
+                
+                ).toList(),);
             }
             else{
               return Center(child: CircularProgressIndicator());

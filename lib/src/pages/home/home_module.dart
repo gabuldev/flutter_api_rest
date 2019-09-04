@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:tratar_erros_dio/src/app/app_module.dart';
 import 'package:tratar_erros_dio/src/pages/create/create_bloc.dart';
 import 'package:tratar_erros_dio/src/pages/home/home_repository.dart';
+import 'package:tratar_erros_dio/src/pages/update/update_bloc.dart';
 import 'package:tratar_erros_dio/src/shared/custom_dio/custom_dio.dart';
 
 import 'home_bloc.dart';
@@ -13,6 +14,7 @@ class HomeModule extends ModuleWidget {
   List<Bloc> get blocs => [
         Bloc((i) => HomeBloc(HomeModule.to.getDependency<HomeRepository>())),
         Bloc((i) => CreateBloc(HomeModule.to.getDependency<HomeRepository>())),
+        Bloc((i) => UpdateBloc(HomeModule.to.getDependency<HomeRepository>()))
       ];
 
   @override

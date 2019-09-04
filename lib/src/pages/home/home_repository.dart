@@ -26,6 +26,15 @@ class HomeRepository {
       throw (e.message);
     }
   }
+
+  Future<int> updatePost(Map<String, dynamic> data,int id) async {
+    try {
+      var response = await _client.patch("/posts/$id", data: data);
+      return response.statusCode;
+    } on DioError catch (e) {
+      throw (e.message);
+    }
+  }
 }
 
 //CREATE -> POST
