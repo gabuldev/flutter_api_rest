@@ -8,10 +8,10 @@ class PostModel {
   PostModel({this.userId, this.id, this.title, this.body});
 
   PostModel.fromJson(Map<String, dynamic> json) {
-    userId = json['userId'];
+    userId = json['id'];
     id = json['id'];
-    title = json['title'];
-    body = json['body'];
+    title = json['enterprise_name'];
+    body = json['description'];
   }
 
   Map<String, dynamic> toJson() {

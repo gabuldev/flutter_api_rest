@@ -9,7 +9,7 @@ class HomeRepository {
 
   Future<List<PostModel>> getPosts() async {
     try {
-      var response = await _client.get("/posts");
+      var response = await _client.get("/enterprises");
       return (response.data as List)
           .map((item) => PostModel.fromJson(item))
           .toList();

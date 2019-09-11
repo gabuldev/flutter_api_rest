@@ -22,11 +22,11 @@ class CustomIntercetors extends InterceptorsWrapper{
    @override 
     onError(DioError e) {
       //Exception
-      print("ERROR[${e.response.statusCode}] => PATH: ${e.request.path}");
+      print("ERROR[${e.response?.statusCode}] => PATH: ${e.request.path}");
       if(e.response.statusCode == 404)
       return DioError(message: "Erro interno");
 
-     return  e;
+     return  DioError(message: e.response.data['message']);
     }
 
 }
