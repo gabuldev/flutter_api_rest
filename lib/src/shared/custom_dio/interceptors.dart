@@ -8,7 +8,7 @@ class CustomIntercetors extends InterceptorsWrapper{
   @override
   onRequest(RequestOptions options){
     print("REQUEST[${options.method}] => PATH: ${options.path}");
-     return options;
+
     }
 
   @override  
@@ -16,17 +16,13 @@ class CustomIntercetors extends InterceptorsWrapper{
       //200
       //201
       print("RESPONSE[${response.statusCode}] => PATH: ${response.request.path}");
-     return response; 
+ 
     }
 
    @override 
     onError(DioError e) {
       //Exception
       print("ERROR[${e.response?.statusCode}] => PATH: ${e.request.path}");
-      if(e.response.statusCode == 404)
-      return DioError(message: "Erro interno");
-
-     return  DioError(message: e.response.data['message']);
     }
 
 }

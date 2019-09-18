@@ -8,14 +8,13 @@ class AuthIntercetors extends InterceptorsWrapper {
   onRequest(RequestOptions options) async {
     AuthBloc auth = AppModule.to.getBloc<AuthBloc>();
     CustomDio dio = AppModule.to.getDependency<CustomDio>();
-
+    await auth.getToken();
     var jwt = auth.jwt;
 
     if (jwt == null) {
       dio.lock();
 
       jwt = await auth.login();
-
       options.headers.addAll({"Authorization": jwt + "12"});
 
       dio.unlock();
