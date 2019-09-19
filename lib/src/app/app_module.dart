@@ -12,9 +12,8 @@ class AppModule extends ModuleWidget {
       ];
 
   @override
-  List<Dependency> get dependencies => [
-    Dependency((i) => CustomDio())
-  ];
+  List<Dependency> get dependencies =>
+      [Dependency((i) => CustomDio().createDio())];
 
   @override
   Widget get view => AppWidget();
