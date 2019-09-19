@@ -19,8 +19,8 @@ class HomeModule extends ModuleWidget {
 
   @override
   List<Dependency> get dependencies => [
-        Dependency(
-            (i) => HomeRepository(AppModule.to.getDependency<CustomDio>()))
+        Dependency((i) =>
+            HomeRepository(AppModule.to.getDependency<CustomDio>().createDio()))
       ];
 
   @override

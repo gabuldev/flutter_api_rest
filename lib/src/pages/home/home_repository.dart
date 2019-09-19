@@ -1,9 +1,8 @@
 import 'package:dio/dio.dart';
-import 'package:tratar_erros_dio/src/shared/custom_dio/custom_dio.dart';
 import 'package:tratar_erros_dio/src/shared/models/post_model.dart';
 
 class HomeRepository {
-  final CustomDio _client;
+  final Dio _client;
 
   HomeRepository(this._client);
 
@@ -27,7 +26,7 @@ class HomeRepository {
     }
   }
 
-  Future<int> updatePost(Map<String, dynamic> data,int id) async {
+  Future<int> updatePost(Map<String, dynamic> data, int id) async {
     try {
       var response = await _client.patch("/posts/$id", data: data);
       return response.statusCode;
