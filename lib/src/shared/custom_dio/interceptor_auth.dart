@@ -12,12 +12,12 @@ class AuthIntercetors extends InterceptorsWrapper {
     var jwt = auth.jwt;
 
     if (jwt == null) {
-      dio.lock();
+      dio.client.lock();
 
       jwt = await auth.login();
       options.headers.addAll({"Authorization": jwt + "12"});
 
-      dio.unlock();
+      dio.client.unlock();
 
       return options;
     } else {
@@ -29,7 +29,7 @@ class AuthIntercetors extends InterceptorsWrapper {
   @override
   onResponse(Response response) {
     print("RESPONSE[${response.statusCode}] => PATH: ${response.request.path}");
-    return response;
+
   }
 
   @override
@@ -43,23 +43,23 @@ class AuthIntercetors extends InterceptorsWrapper {
 
       if (auth.jwt != options.headers["Authorization"]) {
         options.headers["Authorization"] = auth.jwt;
-        return dio.request(options.path, options: options);
+        return dio.client.request(options.path, options: options);
       }
 
-      dio.lock();
-      dio.interceptors.responseLock.lock();
-      dio.interceptors.errorLock.lock();
+      dio.client.lock();
+      dio.client.interceptors.responseLock.lock();
+      dio.client.interceptors.errorLock.lock();
       
       return auth.login().then((d) {
         //update csrfToken
         options.headers["Authorization"] = d;
       }).whenComplete(() {
-        dio.unlock();
-        dio.interceptors.responseLock.unlock();
-        dio.interceptors.errorLock.unlock();
+        dio.client.unlock();
+        dio.client.interceptors.responseLock.unlock();
+        dio.client.interceptors.errorLock.unlock();
       }).then((e) {
         //repeat
-        return dio.request(options.path, options: options);
+        return dio.client.request(options.path, options: options);
       });
     }
   }

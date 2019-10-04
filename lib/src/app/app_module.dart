@@ -1,4 +1,5 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:tratar_erros_dio/src/shared/auth/auth_bloc.dart';
 import 'package:tratar_erros_dio/src/shared/auth/auth_repository.dart';
@@ -16,7 +17,8 @@ class AppModule extends ModuleWidget {
 
   @override
   List<Dependency> get dependencies => [
-    Dependency((i) => CustomDio()),
+    Dependency((i) => Dio()),
+    Dependency((i) => CustomDio(i.getDependency<Dio>())),
     Dependency((i) => AuthRepository())
   ];
 

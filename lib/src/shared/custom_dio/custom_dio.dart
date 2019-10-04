@@ -7,15 +7,17 @@ import 'package:tratar_erros_dio/src/shared/custom_dio/interceptors.dart';
 
 import 'interceptor_auth.dart';
 
-class CustomDio extends Dio{
+class CustomDio {
+
+  final Dio client;
 
 
-  CustomDio(){
-    options.baseUrl = BASE_URL;
-    interceptors.add(CacheIntercetors());
-    interceptors.add(CustomIntercetors());
-    interceptors.add(AuthIntercetors());
-    options.connectTimeout = 5000;
+  CustomDio(this.client){
+    client.options.baseUrl = BASE_URL;
+    client.interceptors.add(CacheIntercetors());
+    client.interceptors.add(CustomIntercetors());
+    client.interceptors.add(AuthIntercetors());
+    client.options.connectTimeout = 5000;
   }
 
 }
